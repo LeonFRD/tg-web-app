@@ -1,30 +1,37 @@
 import React, { useState, useEffect } from 'react';
-import './App.css'; // Import your CSS file
+import './App.css'; 
 
 function App() {
   const [groups, setGroups] = useState([]);
 
   useEffect(() => {
-    const telegram = window.Telegram.WebApp;
-    telegram.ready();
+    // Check if Telegram Web App is available
+    if (window.Telegram && window.Telegram.WebApp) { 
+      const telegram = window.Telegram.WebApp;
+      telegram.ready();
 
-    const fetchData = async () => {
-      try {
-        const chatId = await telegram.chatId; // Get the current chat ID
-        const groups = await telegram.getChatAdministrators(chatId);
-        const groupData = groups.map(member => ({
-          id: member.user.id,
-          username: member.user.username,
-          firstName: member.user.first_name,
-          lastName: member.user.last_name
-        }));
-        setGroups(groupData);
-      } catch (error) {
-        console.error("Error fetching groups:", error);
-      }
-    };
+      const fetchData = async () => {
+        try {
+          const chatId = await telegram.chatId;
+          const groups = await telegram.getChatAdministrators(chatId); 
+          
+          const groupData = groups.map(member => ({
+            id: member.user.id,
+            username: member.user.username,
+            firstName: member.user.first_name,
+            lastName: member.user.last_name
+          }));
 
-    fetchData(); 
+          setGroups(groupData); 
+        } catch (error) {
+          console.error("Error fetching groups:", error);
+        }
+      };
+
+      fetchData(); 
+    } else {
+      console.error("Telegram Web App is not available."); 
+    }
   }, []);
 
   return (
