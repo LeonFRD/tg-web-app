@@ -46,7 +46,7 @@ function App() {
         <button onClick={() => { 
           if (window.Telegram && window.Telegram.WebApp) {
             const telegram = window.Telegram.WebApp;
-            telegram.sendMessage('YOUR_BOT_TOKEN', 'Test message'); 
+            telegram.sendMessage('7134726909:AAE793FREFmLcpWiyb3SQwQ36ff8xiiEWJQ', 'Test message'); 
           } 
         }}>
           Send Test
