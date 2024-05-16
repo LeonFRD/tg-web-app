@@ -40,7 +40,18 @@ function App() {
           value={message} 
           onChange={handleInputChange} 
         />
-        <button onClick={sendMessage}>Send</button>
+        <button onClick={sendMessage}>Send</button> {/* Your existing button */}
+
+        {/* Add the test button here */}
+        <button onClick={() => { 
+          if (window.Telegram && window.Telegram.WebApp) {
+            const telegram = window.Telegram.WebApp;
+            telegram.sendMessage('YOUR_BOT_TOKEN', 'Test message'); 
+          } 
+        }}>
+          Send Test
+        </button> 
+
       </div>
     </div>
   );
