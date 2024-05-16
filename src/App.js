@@ -1,37 +1,39 @@
-import './App.css';
 import React, { useState, useEffect } from 'react';
+import './App.css'; // Import your CSS file
 
 function App() {
   const [groups, setGroups] = useState([]);
 
   useEffect(() => {
-    const telegram = window.Telegram.WebApp; // Get the Telegram web app object
-    telegram.ready(); 
+    const telegram = window.Telegram.WebApp;
+    telegram.ready();
 
     const fetchData = async () => {
       try {
-        await telegram.sendMessage('7134726909:AAE793FREFmLcpWiyb3SQwQ36ff8xiiEWJQ', '/getGroups'); // Send the /getGroups command
-        telegram.onEvent('message', (msg) => { 
-          if (msg.text && msg.text.startsWith('[')) { // Check if the message contains the group data (JSON)
-            const parsedData = JSON.parse(msg.text);
-            setGroups(parsedData);
-          }
-        });
+        const chatId = await telegram.chatId; // Get the current chat ID
+        const groups = await telegram.getChatAdministrators(chatId);
+        const groupData = groups.map(member => ({
+          id: member.user.id,
+          username: member.user.username,
+          firstName: member.user.first_name,
+          lastName: member.user.last_name
+        }));
+        setGroups(groupData);
       } catch (error) {
         console.error("Error fetching groups:", error);
       }
     };
 
-    fetchData();
+    fetchData(); 
   }, []);
 
   return (
     <div className="App">
       <h1>My Groups</h1>
-      <ul>
+      <ul className="group-list">
         {groups.map(group => (
-          <li key={group.id}>
-            <strong>{group.firstName} {group.lastName}</strong> ({group.username})
+          <li key={group.id} className="group-item">
+            {group.firstName} {group.lastName} ({group.username})
           </li>
         ))}
       </ul>

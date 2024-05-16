@@ -1,5 +1,15 @@
-* {
-  margin: 0;
+.App {
+  font-family: sans-serif;
+  text-align: center;
+  padding: 20px;
+}
+
+.group-list {
+  list-style: none; /* Remove default list styling */
   padding: 0;
-  box-sizing: border-box;
+}
+
+.group-item {
+  padding: 10px;
+  border-bottom: 1px solid #eee; /* Add a subtle separator */
 }
